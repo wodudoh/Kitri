@@ -71,7 +71,7 @@ public class JDBCTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+	// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 //			7) DB와 연결닫기
