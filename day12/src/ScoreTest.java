@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.plaf.SliderUI;
-
 
 /**
  * scores.txt파일의 사원들 사내교육평가 점수를 구하시오. 각학생의 이름과 평균을 출력하시오. 단 시험미응시인경우 0점으로 변환하여
@@ -153,12 +151,12 @@ public class ScoreTest {
 		//TODO : AVG 불러오기
 		//iterator 사용해보자
 		
-		while(){
-			StringBuilder sb=null;
-			
-			System.out.println(sb);
+		Iterator<ScoreDTO> it = sList.iterator();
+		while(it.hasNext()){
+			System.out.println(it.next().getAvg());
 		}
 		
+
 		//TODO : SWAP
 		
 		//TODO : 정렬 완료 출력
