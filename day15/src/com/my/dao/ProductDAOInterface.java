@@ -1,5 +1,6 @@
 package com.my.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.my.dto.Product;
@@ -14,7 +15,7 @@ public interface ProductDAOInterface {
 	 */
 	List<Product> selectAll() throws FindException;
 	List<Product> selectByName(String name)throws FindException;
-	Product selectByNo(String no)throws FindException;
+	Product selectByNo(String no)throws FindException, SQLException;
 	Product update(Product product);
 	boolean delete(String no);
 }

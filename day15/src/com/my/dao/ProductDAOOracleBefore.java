@@ -13,10 +13,13 @@ import com.my.dto.Product;
 import com.my.exception.AddException;
 import com.my.exception.FindException;
 
-public class ProductDAOOracle implements ProductDAOInterface {
+public class ProductDAOOracleBefore implements ProductDAOInterface {
 
-	
-	
+	String className = "oracle.jdbc.driver.OracleDriver";
+	Connection conn = null; //그다지 좋은 코드는 아님. 한 메소드에서 연결이 끊기고 디비 복구가 되었어도 세션은 다시 복구 될 수 없다. 
+	Statement stmt = null;
+	ResultSet rs = null;
+	StringBuilder sql = null;
 
 	@Override
 	public void add(Product product) throws AddException {
@@ -25,16 +28,20 @@ public class ProductDAOOracle implements ProductDAOInterface {
 
 	@Override
 	public List<Product> selectAll() throws FindException {
-		Connection conn = null;
-		ResultSet rs = null;
-		Statement stmt = null;
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+		String user = "hr";
+		String password = "hr";
 		List <Product> list=null;
-		StringBuilder sql = null;
+
+		
 		try {
-			conn = com.my.sql.MyConnection.getConnection();
+			//클래스 로드
+			Class.forName(className);
+			//DB 접속
+			conn = DriverManager.getConnection(url, user, password);
 			//sql 문장 송신
 			sql = new StringBuilder("SELECT prod_no, prod_name, prod_price, category_no FROM product");
-			list = new ArrayList<Product>();
+			list =new ArrayList<Product>();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql.toString());
 			//결과 처리
@@ -54,7 +61,7 @@ public class ProductDAOOracle implements ProductDAOInterface {
 		} catch (Exception e) {
 			throw new FindException(e.getMessage());
 		}finally {
-			com.my.sql.MyConnection.closeConnection(conn, stmt, rs);
+			connClose();
 		}
 		//결과 리턴
 		return list;
@@ -63,17 +70,18 @@ public class ProductDAOOracle implements ProductDAOInterface {
 
 	@Override
 	public List<Product> selectByName(String name) {
-		Connection conn = null;
-		ResultSet rs = null;
-		Statement stmt = null;
-		List <Product> list=null;
-		StringBuilder sql = null;
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+		String user = "hr";
+		String password = "hr";
+		List <Product> list = null;
 		//sql 문장
 
 		
 		try {
-			//Connection 얻어오기
-			conn = com.my.sql.MyConnection.getConnection();
+			//클래스 로드
+			Class.forName(className);
+			//DB 접속
+			conn = DriverManager.getConnection(url, user, password);
 			list =new ArrayList<Product>();
 			//product 이름 검색 sql
 			sql = new StringBuilder("SELECT prod_no, prod_name, prod_price, category_no FROM product WHERE prod_name like '%");
@@ -100,8 +108,7 @@ public class ProductDAOOracle implements ProductDAOInterface {
 		} catch (SQLException e) {
 		
 		}finally {
-			com.my.sql.MyConnection.closeConnection(conn, stmt, rs);
-			
+			connClose();
 		}
 			
 		//결과 리턴
@@ -110,16 +117,18 @@ public class ProductDAOOracle implements ProductDAOInterface {
 
 	@Override
 	public Product selectByNo(String no) throws FindException, SQLException {
-		Connection conn = null;
-		ResultSet rs = null;
-		Statement stmt = null;
-		StringBuilder sql = null;
-		
+		String url = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+		String user = "hr";
+		String password = "hr";
+
 		Product pro = new Product();
-		Category cat = new Category();
+		Category cat =new Category();
 		
 		try {
-			conn = com.my.sql.MyConnection.getConnection();
+			//클래스 로드
+			Class.forName(className);
+			//DB 접속
+			conn = DriverManager.getConnection(url, user, password);
 			//product 번호 검색 sql
 			sql = new StringBuilder("SELECT prod_no, prod_name, prod_price, category_no FROM product WHERE prod_no=UPPER('");
 			sql.append(no);
@@ -144,7 +153,7 @@ public class ProductDAOOracle implements ProductDAOInterface {
 		} catch (ClassNotFoundException e) {
 
 		} finally {
-			com.my.sql.MyConnection.closeConnection(conn, stmt, rs);
+			connClose();
 		}
 			
 		//결과 리턴
@@ -161,6 +170,38 @@ public class ProductDAOOracle implements ProductDAOInterface {
 	public boolean delete(String no) {
 		// TODO 구현안함
 		return false;
+	}
+	
+	//close 메소드
+	public void connClose(){
+		
+		if(rs!=null){
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(stmt!=null){
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+		if(conn!=null){
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 }

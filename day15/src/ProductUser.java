@@ -1,8 +1,9 @@
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 import com.my.dao.ProductDAOInterface;
-import com.my.dao.ProductDAOOracle;
+import com.my.dao.ProductDAOOracleBefore;
 import com.my.dto.Product;
 import com.my.exception.FindException;
 
@@ -10,7 +11,7 @@ public class ProductUser {
 	private ProductDAOInterface dao;
 	static private Scanner sc = new Scanner(System.in);
 	public ProductUser(){
-		dao = new ProductDAOOracle();
+		dao = new ProductDAOOracleBefore();
 	}
 	public void findAll(){
 		System.out.println(">>상품전체 검색작업<<");
@@ -29,16 +30,16 @@ public class ProductUser {
 		System.out.println(">>상품번호로 상품 검색작업<<");
 		System.out.print("상품번호:");
 		String no = sc.nextLine();	
-		
 		Product p;
 		try {
 			p = dao.selectByNo(no);	
 			System.out.println(p);
 			//TODO 상품번호:상품명:가격:카테고리번호가 출력되어야함
 			
-		} catch (FindException e1) {
+		} catch (FindException|SQLException e1) {
+			System.out.println(e1);
 			System.out.println("검색 결과가 없습니다.");
-			e1.printStackTrace();
+			
 		}
 	}
 	public void findByName() {
