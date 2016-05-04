@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.my.dto.Product;
 import com.my.exception.AddException;
+import com.my.exception.DeleteException;
 import com.my.exception.FindException;
 
 public interface ProductDAOInterface {
@@ -16,5 +17,5 @@ public interface ProductDAOInterface {
 	List<Product> selectByName(String name)throws FindException;
 	Product selectByNo(String no)throws FindException;
 	Product update(Product product);
-	boolean delete(String no);
+	void delete(String no)throws DeleteException;
 }

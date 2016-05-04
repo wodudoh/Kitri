@@ -6,6 +6,7 @@ import com.my.dao.ProductDAOOracle;
 import com.my.dto.Category;
 import com.my.dto.Product;
 import com.my.exception.AddException;
+import com.my.exception.DeleteException;
 import com.my.exception.FindException;
 
 public class ProductManager {
@@ -74,7 +75,13 @@ public class ProductManager {
 		String prod_name = sc.nextLine();
 
 		System.out.print("가격:");
-		int prod_price = Integer.parseInt(sc.nextLine());
+		int prod_price;
+		
+		try{
+			prod_price = Integer.parseInt(sc.nextLine());
+		} catch(NumberFormatException e){
+			prod_price = 0;
+		}
 
 		System.out.print("제조일자:");
 		String prod_mf_dt = sc.nextLine();
@@ -149,7 +156,12 @@ public class ProductManager {
 		System.out.println(">>상품 삭제작업<<");
 		System.out.print("상품번호");
 		String prod_no = sc.nextLine();
-		productDAO.delete(prod_no);
+		try {
+			productDAO.delete(prod_no);
+		} catch (DeleteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {

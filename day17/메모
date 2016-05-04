@@ -1,0 +1,18 @@
+1.라이브러리 하나 알아보고 테스트를 해보자
+2. 자바 sql 패키지 > MataData(자료에대한 정보, 정보용 라이브러리) > ResultSet
+ResultSet : 지금 검색해온 테이블의 행을 커서로 이동하면서 그 행이 가질 수 있는 컬럼수, 이름 타입 등의 정보를 얻어 올수 있다.
+
+DataBaseMetaData : 데이터 베이스에 대한 정보 카탈로그 정보, 카탈로그 세퍼레이터, 데이터 베이스 메이져 버전, 마이너 버전, 벤더사 이름을 반환해준다.
+ResultSet의 역검색 방법 : previous를 수행하기우해서는 상수로 type_scroll_insensitive 라는 것을 설정해야한다.
+검색된 내용을 업데이트 하고 싶을경우 : concur_updateable의 상수값을 지정하여서 이동행의 위치에서 result 셋을 통해 업데이트가 가능하다.
+rs.absolute(5) : resultSet 의 현재 인덱스 커서를 인자로 지정가능하다. 단 상수로 type_scroll_insensitive 라는 것을 설정해야한다.
+
+PreparedStatment
+ execute> sql 문이 네트워크를 통해서 전송되면 그 구문이 select 구문, update 구문인지, 구분하기 어렵다.executeUpdate나 executequery 중 어느것을 써야하는지 불분명할때 사용함.
+ true 는 select 문장, false 그외의 DDL, DML 구문을 수행한다는 것을 알 수 있음.
+ addBatch(): 일괄처리할 내용을 계속 추가 시켜 놓고, executeBatch()로 실행한다. 
+ 
+ Connection 객체 안에 
+ setAutoCommit 값을 false 를 주면 자동 auto commit을 해제 가능하다.
+ commit() 
+ rollback()
