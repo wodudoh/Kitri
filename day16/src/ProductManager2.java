@@ -38,7 +38,7 @@ public class ProductManager2 {
 			System.out.println(p);
 			//TODO 상품번호:상품명:가격:카테고리번호가 출력되어야함
 			
-		} catch (FindException|SQLException e1) {
+		} catch (FindException e1) {
 			System.out.println(e1);
 			System.out.println("검색 결과가 없습니다.");
 			
